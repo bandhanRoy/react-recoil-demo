@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { RecoilRoot } from 'recoil';
 
+// add the recoil root globally
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <RecoilRoot>
     <App />
-  </React.StrictMode>,
+  </RecoilRoot>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

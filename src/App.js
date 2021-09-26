@@ -1,25 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import { useSetRecoilState } from 'recoil';
+import { animeTitlesStore } from './store';
+import { useEffect } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import HomePage from './pages/Home';
+import AnimePage from './pages/Anime';
 
 function App() {
+  const setTitles = useSetRecoilState(animeTitlesStore);
+
+  const fetchAnimes = async () => {
+    try {
+      let res = await fetch(
+        "https://animechan.vercel.app/api/available/anime"
+      );
+      res = await res.json();
+      setTitles(res);
+    } catch (error) {
+      console.log(error?.response?.data?.error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnimes();
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/anime/:name" component={AnimePage} />
+      </Switch>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
